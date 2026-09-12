@@ -1,57 +1,106 @@
-# Google Play Store — Publishing Checklist (اردو کیلکولیٹر)
+# Google Play Store — Release Checklist (Urdu Calculator)
 
-The app is already a complete PWA (manifest + service worker + icons + offline cache).
-This checklist covers everything needed to get it live on the Play Store.
+## Current release target
 
-## 1. Prerequisites (you must do these — they cost money/accounts)
+- App: **Urdu Calculator — اردو کیلکولیٹر**
+- Developer: **WARAQ Enterprises, Gilgit**
+- Package ID: **com.waraq.urducalculator**
+- Distribution: Google Play, Android App Bundle (`.aab`)
+- Target SDK: **Android 16 / API 36** (required for new Google Play apps from August 31, 2026)
+- Orientation: Portrait-first, responsive UI
+- Pricing: Free
+- Ads: None
+- Accounts: None
+- Data collection: None
 
-- [ ] **Google Play developer account** — https://play.google.com/console
-      One-time **$25 USD** fee. Use a Google account you want tied to the app.
-- [ ] **Host the app on public HTTPS** (required for any web-based route).
-      Free options: GitHub Pages, Netlify, Cloudflare Pages, Vercel.
-      Upload the `urdu-calculator/` folder (index.html + css/ + js/ + icons/ + manifest.json + sw.js).
-- [ ] **Privacy policy page** — even though the app collects *no data*, Play requires a URL.
-      Host a simple page (see section 4) and link it in the store listing.
+Google Play currently requires new apps and updates to target Android 16 (API 36) or higher. See the official Android requirement before each release.
 
-## 2. Pick how to build the Android package (AAB)
+## 1. Web/PWA release
 
-| Route | Effort | Notes |
-|-------|--------|-------|
-| **PWABuilder (recommended)** | Low | Go to https://pwabuilder.com → paste your hosted URL → it generates a signed **Trusted Web Activity (TWA)** AAB with a Play Store badge. No local Android toolchain needed. |
-| **Capacitor local build** | Medium | Requires installing JDK 17+ and Android SDK on this PC (~3 GB). I can scaffold the Capacitor project and generate the signing keystore; you approve the installs. |
-| **Bubblewrap CLI** | Medium | Google's official TWA builder (what PWABuilder uses under the hood). Same requirements as PWABuilder but from the command line. |
+- [x] Public HTTPS hosting on GitHub Pages
+- [x] `manifest.json`
+- [x] Service worker and offline cache
+- [x] 192px / 512px PWA icons
+- [x] Privacy policy page
+- [ ] Remove all external runtime assets and bundle them locally so the installed app remains genuinely self-contained after the first load.
+- [ ] Verify the deployed GitHub Pages build in Chrome Android, including offline mode after installation.
 
-> Note: PWABuilder's TWA uses the PWA's manifest and icons automatically — which is exactly
-> why we added `manifest.json`, `sw.js` and `icons/` already.
+## 2. Android packaging
 
-## 3. Store listing (copy-paste ready)
+**Recommended route: Trusted Web Activity (TWA).**
 
-- **App name (30 chars max):** `Urdu Calculator`
-- **Short description (80 chars max):**
-  `Calculator, age, Zakat and unit converter for Urdu speakers. Fully offline.`
-- **Full description:** see `store-description.md` (bilingual, ready to paste)
-- **Category:** Tools / Education
-- **Content rating:** Everyone (E)
-- **Data safety form:** No data collected — select "No" for everything, privacy policy URL required anyway.
+The Android package should open the existing PWA in a TWA rather than embedding the site in a generic WebView. Use Bubblewrap/PWABuilder or an equivalent TWA toolchain.
 
-### Screenshots (min 2, 1080×1920 or 1920×1080)
-- Calculator tab (Urdu, RTL) — 1080×1920
-- Converter tab or Zakat result — 1080×1920
-- Optional feature graphic 1024×500: app icon on emerald background.
+Required Android configuration:
 
-## 4. Privacy policy (required even with zero data)
+- Package/application ID: `com.waraq.urducalculator`
+- `compileSdk`: 36 or higher
+- `targetSdk`: 36 or higher
+- Min SDK: choose the supported Android baseline during TWA generation
+- Orientation: portrait-primary
+- App label: `Urdu Calculator`
+- App icon: existing 192/512 PWA artwork, plus Android adaptive/maskable icon assets as required by the packaging tool
+- Release output: signed `.aab`
 
-Host any HTML page stating: "This app collects no personal data, stores nothing on
-servers, and works fully offline. All calculations happen on your device."
-A one-page `privacy.html` is included in this project — upload it next to the app.
+## 3. Digital Asset Links
 
-## 5. Final steps
+TWA verification requires a Digital Asset Links file containing the SHA-256 fingerprint of the release signing certificate.
 
-- [ ] Upload AAB in Play Console → Production → Android App Bundle
-- [ ] Fill listing, pricing (Free), content rating questionnaire
-- [ ] Submit for review (usually 2–7 days)
+Because the current app is hosted at `https://xl8saif.github.io/urdu-calculator/`, the final asset-links file must be served from the origin's `/.well-known/assetlinks.json` location. This may require adding the file to the `xl8saif.github.io` GitHub Pages site, or moving the app to a custom domain where the file can be controlled directly.
 
-## Why this app will pass review easily
-- Works fully offline — no network permission needed
-- No accounts, no ads, no microtransactions
-- No data collection at all
+Do not publish a placeholder fingerprint. Generate the release keystore first, obtain its SHA-256 certificate fingerprint, then create the final `assetlinks.json`.
+
+## 4. Privacy and Data Safety
+
+- [x] Privacy policy is available at `/privacy.html`.
+- [ ] Add the privacy-policy URL to Play Console.
+- [ ] Complete Google Play Data Safety form.
+- [ ] Declare no data collected/shared only after verifying the final Android package and all bundled libraries/SDKs.
+- [ ] Declare ads: No.
+- [ ] Declare government app: No, unless the Play Console questionnaire determines otherwise.
+- [ ] Complete target audience/content rating declarations.
+
+The privacy policy and Data Safety form must accurately match the final shipped package, including any third-party SDK behavior.
+
+## 5. Store listing assets
+
+Prepare:
+
+- App icon: 512×512 source artwork
+- Feature graphic: 1024×500
+- At least 2 phone screenshots, preferably 1080×1920
+- Optional tablet/large-screen screenshots if the final UI is optimized for them
+- Short description: maximum 80 characters
+- Full description: see `store-description.md`
+
+Suggested short description:
+
+`Calculator, age, Zakat and unit converter. Free, offline, no ads.`
+
+## 6. Release signing
+
+- [ ] Create a permanent release keystore.
+- [ ] Back up the keystore securely.
+- [ ] Record the package name and release certificate fingerprint.
+- [ ] Configure Play App Signing in Google Play Console.
+- [ ] Never commit the keystore, passwords, or signing secrets to GitHub.
+- [ ] Build a release `.aab` with `targetSdk 36+`.
+- [ ] Install/test the release build on a physical Android device before upload.
+
+## 7. Final Play Console submission
+
+- [ ] Create the app in Google Play Console.
+- [ ] Upload the signed `.aab` to an internal testing track first.
+- [ ] Test installation, navigation, offline behavior, links, orientation, and back navigation.
+- [ ] Complete Store Listing.
+- [ ] Complete App Content declarations.
+- [ ] Complete Data Safety.
+- [ ] Add privacy policy URL.
+- [ ] Complete content rating questionnaire.
+- [ ] Complete target audience and ads declarations.
+- [ ] Review Play Console pre-launch/device testing results.
+- [ ] Promote the tested build to production.
+
+## 8. Important release rule
+
+Do not claim that the Android release is fully offline until every runtime dependency—including branding images, fonts, JavaScript, CSS, icons, and service-worker cache entries—has been verified as local to the app/web origin. The current CSS contains external GitHub raw logo references; these must be replaced with local copies before the final offline release.
