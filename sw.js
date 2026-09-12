@@ -2,16 +2,17 @@
    sw.js — service worker for اردو کیلکولیٹر
    Strategy:
      - navigations (HTML): network-first, fall back to cache (offline works)
-     - assets (css/js/icons/manifest): cache-first, refreshed in background
-   Bump CACHE_VERSION whenever you change app files.
+     - assets (css/js/icons/manifest/fonts): cache-first, refreshed in background
    ============================================================ */
-const CACHE_VERSION = "urdu-calc-v13";
+const CACHE_VERSION = "urdu-calc-v14";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.json",
   "./privacy.html",
   "./css/style.css",
+  "./css/base.css",
+  "./css/style-overrides.css",
   "./js/i18n.js",
   "./js/calculator.js",
   "./js/age.js",
@@ -34,7 +35,11 @@ const APP_SHELL = [
   "./icons/s-proz.png",
   "./icons/bg-ornament.jpg",
   "./fonts/mehr.woff",
-  "./fonts/mehr.ttf"
+  "./fonts/mehr.ttf",
+  "./fonts/ScheherazadeNew-Regular.ttf",
+  "./fonts/ScheherazadeNew-Medium.ttf",
+  "./fonts/ScheherazadeNew-SemiBold.ttf",
+  "./fonts/ScheherazadeNew-Bold.ttf"
 ];
 
 self.addEventListener("install", (event) => {
@@ -58,7 +63,6 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
 
-  // HTML navigations: try network, fall back to cache
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req)
@@ -74,7 +78,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // other assets: cache-first, refresh in background
   event.respondWith(
     caches.match(req).then((hit) => {
       const fetchAndUpdate = fetch(req)
