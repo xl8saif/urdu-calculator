@@ -58,6 +58,17 @@ html[dir="rtl"] .about-dev-name {
   font-weight: 600;
 }
 
+/* Smaller language and digit controls in the header. */
+.chip {
+  font-size: 0.95rem;
+  padding: 9px 17px;
+}
+
+#btnDigits {
+  font-size: 1.15rem;
+  padding: 8px 20px;
+}
+
 /* Developer introduction branding: Waraq and CloudTrans logos flank the project name. */
 .about-project {
   display: flex;
