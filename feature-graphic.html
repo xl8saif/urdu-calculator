@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: "Mehr";
+    src: url("../fonts/mehr.woff") format("woff"), url("../fonts/mehr.ttf") format("truetype");
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1024px; height: 500px; overflow: hidden;
+    background: radial-gradient(900px 500px at 50% -20%, #1a4a33 0%, #0d1f17 65%);
+    display: flex; align-items: center; justify-content: center; gap: 36px;
+    font-family: "Mehr", Tahoma, sans-serif;
+    position: relative;
+  }
+  body::before {
+    content: ""; position: absolute; inset: 0;
+    background: url("../icons/bg-ornament.jpg") top left / 15% auto repeat;
+    opacity: 0.15;
+  }
+  .icon { width: 210px; height: 210px; position: relative; filter: drop-shadow(0 12px 28px rgba(0,0,0,.5)); }
+  .text { position: relative; text-align: center; }
+  .ur { font-size: 74px; color: #f5d67b; line-height: 1.6; }
+  .en { font-family: "Segoe UI", sans-serif; font-size: 40px; color: #f4efe3; font-weight: 600; letter-spacing: 1px; margin-top: 6px; }
+  .tag { font-family: "Mehr", Tahoma, sans-serif; font-size: 26px; color: #b9c8bd; margin-top: 14px; }
+  .divider { width: 3px; height: 240px; background: linear-gradient(#e8b84b00, #e8b84b, #e8b84b00); position: relative; }
+</style>
+</head>
+<body>
+  <img class="icon" src="../icons/icon-512.png" alt="">
+  <div class="divider"></div>
+  <div class="text">
+    <div class="ur">اردو کیلکولیٹر</div>
+    <div class="en">Urdu Calculator</div>
+    <div class="tag">حساب، عمر، زکوٰۃ اور کنورٹر — مکمل آف لائن</div>
+  </div>
+</body>
+</html>
