@@ -20,7 +20,7 @@
     // ---- about / credits ----
     aboutBtn: { ur: "ڈیولپر کا تعارف", en: "About the Developer" },
     aboutTitle: { ur: "ڈیولپر کا تعارف", en: "About the Developer" },
-    aboutProject: { ur: "وڑاق انٹرپرائزز، گلگت کا ایک منصوبہ", en: "A project of Waraq Enterprises, Gilgit" },
+    aboutProject: { ur: "ورق انٹرپرائزز، گلگت", en: "WARAQ Enterprises, Gilgit" },
     aboutDevelopedBy: { ur: "ڈیولپر", en: "Developed by" },
     devName: { ur: "سید سیف اللہ جیلانی - گلگت", en: "Syed Saif Ullah Jailani - Gilgit" },
     aboutVersion: { ur: "ورژن", en: "Version" },
