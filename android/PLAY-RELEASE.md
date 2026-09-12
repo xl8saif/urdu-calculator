@@ -1,6 +1,6 @@
 # Android / Google Play release
 
-This PWA should be packaged as a Trusted Web Activity (TWA) using Bubblewrap/PWABuilder.
+This PWA should be packaged as a Trusted Web Activity (TWA) using Bubblewrap.
 
 ## Release identity
 
@@ -13,12 +13,13 @@ This PWA should be packaged as a Trusted Web Activity (TWA) using Bubblewrap/PWA
 
 ## Build on Windows
 
-Install a current Node.js LTS release and a JDK supported by the current Bubblewrap/Android toolchain.
+Use Node.js 18+ and a JDK supported by the current Bubblewrap/Android toolchain. Bubblewrap 1.25.0 is the current release used for this project; it targets SDK 36.
 
-Then open PowerShell in a new working directory:
+Open PowerShell in a new working directory:
 
 ```powershell
-npm install -g @bubblewrap/cli
+npm install -g @bubblewrap/cli@1.25.0
+bubblewrap --version
 mkdir urdu-calculator-twa
 cd urdu-calculator-twa
 bubblewrap init --manifest https://xl8saif.github.io/urdu-calculator/manifest.json
@@ -34,16 +35,16 @@ During initialization use:
 - Background color: `#0d1f17`
 - Orientation: portrait-primary
 
-Let Bubblewrap create the signing key, but save the keystore and passwords securely. Never commit the keystore or passwords to GitHub.
+Let Bubblewrap create the signing key if you do not already have a permanent release key. Save the keystore and passwords securely. Never commit the keystore or passwords to GitHub.
 
-Before the final build:
+Then run:
 
 ```powershell
 bubblewrap update
 bubblewrap build
 ```
 
-Bubblewrap's build process produces a signed APK and a signed App Bundle when signing is enabled. The Play Store upload artifact is the `.aab` file.
+Bubblewrap builds the Android project and produces a signed APK and signed App Bundle when signing is enabled. The Play Store upload artifact is the signed `.aab` file.
 
 ## Digital Asset Links
 
@@ -55,9 +56,13 @@ After the permanent release keystore is created, obtain its SHA-256 certificate 
 keytool -list -v -keystore android.keystore
 ```
 
-Then create `/.well-known/assetlinks.json` on the web origin with the final package name and certificate fingerprint. Do not use a placeholder fingerprint.
+Then create `/.well-known/assetlinks.json` on the web origin using the final package name and SHA-256 fingerprint. Do not use a placeholder fingerprint.
 
-For the current GitHub Pages project URL, the origin is `xl8saif.github.io`. Because this is a project-site path (`/urdu-calculator/`), the asset-links file may need to be served from the root GitHub Pages site rather than this repository. Verify the final HTTPS location before release.
+For the current GitHub Pages project URL, the origin is `xl8saif.github.io`. Because this is a project-site path (`/urdu-calculator/`), the asset-links file must be served from the origin root, not from `/urdu-calculator/.well-known/`. The final location is therefore expected to be:
+
+`https://xl8saif.github.io/.well-known/assetlinks.json`
+
+This will require a change to the `xl8saif.github.io` GitHub Pages repository after the permanent signing certificate fingerprint is known.
 
 ## Pre-upload testing
 
@@ -73,7 +78,7 @@ For the current GitHub Pages project URL, the origin is `xl8saif.github.io`. Bec
 
 ## Current offline asset status
 
-The Waraq and CloudTrans logos are now referenced as same-origin files in this repository and are included in the service-worker application shell. The service-worker cache was incremented so existing installations can refresh to the new asset set.
+The Waraq and CloudTrans logos are referenced as same-origin files in this repository and are included in the service-worker application shell. The Waraq logo file is `WaraqLogo.jpg`; the CloudTrans logo file is `CloudTrans-Logo.PNG`.
 
 ## Security
 
@@ -87,4 +92,4 @@ Never commit any of the following:
 
 ## Final release blocker
 
-The source/PWA side is prepared. The remaining Android-specific blocker is the release signing key and its SHA-256 certificate fingerprint. That fingerprint is required for the final Digital Asset Links configuration and cannot be safely invented or committed before the permanent release keystore exists.
+The source/PWA side is prepared. The remaining Android-specific blocker is the permanent release signing key and its SHA-256 certificate fingerprint. That fingerprint is required for the final Digital Asset Links configuration and cannot be safely invented or committed before the permanent release keystore exists.
