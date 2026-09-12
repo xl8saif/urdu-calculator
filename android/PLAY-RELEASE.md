@@ -67,9 +67,13 @@ For the current GitHub Pages project URL, the origin is `xl8saif.github.io`. Bec
 4. Test Urdu/Western digit switching.
 5. Test back navigation and external profile links.
 6. Disable network after the first successful load and verify the app still functions.
-7. Verify privacy policy access.
+7. Open the in-app privacy policy link and verify the policy loads correctly.
 8. Verify the TWA does not display browser chrome when Digital Asset Links is correctly configured.
 9. Upload the signed `.aab` to a Play Console internal testing track before production.
+
+## Current offline asset status
+
+The Waraq and CloudTrans logos are now referenced as same-origin files in this repository and are included in the service-worker application shell. The service-worker cache was incremented so existing installations can refresh to the new asset set.
 
 ## Security
 
@@ -81,6 +85,6 @@ Never commit any of the following:
 - Play Console service-account credentials
 - signing keys or certificates containing private key material
 
-## Important current blocker
+## Final release blocker
 
-The web app currently references the Waraq and CloudTrans logo images from external raw GitHub URLs in CSS. For a genuinely self-contained offline release, replace those references with local copies in this repository before final packaging.
+The source/PWA side is prepared. The remaining Android-specific blocker is the release signing key and its SHA-256 certificate fingerprint. That fingerprint is required for the final Digital Asset Links configuration and cannot be safely invented or committed before the permanent release keystore exists.
