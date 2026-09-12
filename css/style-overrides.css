@@ -103,14 +103,14 @@ html[dir="rtl"] .about-dev-name {
   -webkit-backdrop-filter: blur(8px) saturate(120%);
 }
 
-/* Right side in the RTL layout: Waraq Enterprises */
+/* Right side in the RTL layout: Waraq Enterprises. The image is bundled locally. */
 .about-project::before {
-  background-image: url("https://raw.githubusercontent.com/xl8saif/Waraq-Enterprise-Management-System/main/static/images/waraq-logo.png");
+  background-image: url("../IMG-20250514-WA0032.jpg");
 }
 
-/* Left side in the RTL layout: CloudTrans */
+/* Left side in the RTL layout: CloudTrans. The image is bundled locally. */
 .about-project::after {
-  background-image: url("https://raw.githubusercontent.com/xl8saif/Waraq-Enterprise-Management-System/main/static/images/cloudtrans-logo.png");
+  background-image: url("../CloudTrans-Logo.PNG");
 }
 
 @media (max-width: 380px) {
