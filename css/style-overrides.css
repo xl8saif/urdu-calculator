@@ -1,4 +1,4 @@
-/* Urdu Calculator — typography overrides */
+/* Urdu Calculator — typography and branding overrides */
 
 @font-face {
   font-family: "Scheherazade New";
@@ -56,4 +56,50 @@ html[dir="rtl"] .rates-title,
 html[dir="rtl"] .history-head,
 html[dir="rtl"] .about-dev-name {
   font-weight: 600;
+}
+
+/* Developer introduction branding: Waraq and CloudTrans logos flank the project name. */
+.about-project {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 64px;
+  text-align: center;
+  direction: rtl;
+}
+
+.about-project::before,
+.about-project::after {
+  content: "";
+  display: block;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* Right side in the RTL layout: Waraq Enterprises */
+.about-project::before {
+  background-image: url("https://raw.githubusercontent.com/xl8saif/Waraq-Enterprise-Management-System/main/static/images/waraq-logo.png");
+}
+
+/* Left side in the RTL layout: CloudTrans */
+.about-project::after {
+  background-image: url("https://raw.githubusercontent.com/xl8saif/Waraq-Enterprise-Management-System/main/static/images/cloudtrans-logo.png");
+}
+
+@media (max-width: 380px) {
+  .about-project {
+    gap: 7px;
+  }
+
+  .about-project::before,
+  .about-project::after {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
 }
