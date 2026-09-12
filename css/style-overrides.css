@@ -1,0 +1,59 @@
+/* Urdu Calculator — typography overrides */
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../fonts/ScheherazadeNew-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../fonts/ScheherazadeNew-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../fonts/ScheherazadeNew-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../fonts/ScheherazadeNew-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Urdu/RTL headings use Scheherazade New. Body and controls remain on Mehr. */
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] .brand-title,
+html[dir="rtl"] .card-title,
+html[dir="rtl"] .rates-title,
+html[dir="rtl"] .history-head,
+html[dir="rtl"] .about-dev-name {
+  font-family: "Scheherazade New", serif;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] .brand-title {
+  font-weight: 700;
+}
+
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] .card-title,
+html[dir="rtl"] .rates-title,
+html[dir="rtl"] .history-head,
+html[dir="rtl"] .about-dev-name {
+  font-weight: 600;
+}
