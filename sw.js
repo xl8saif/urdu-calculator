@@ -2,9 +2,9 @@
    sw.js — service worker for اردو کیلکولیٹر
    Strategy:
      - navigations (HTML): network-first, fall back to cache (offline works)
-     - assets (css/js/icons/manifest/fonts): cache-first, refreshed in background
+     - assets (css/js/icons/manifest/fonts/images): cache-first, refreshed in background
    ============================================================ */
-const CACHE_VERSION = "urdu-calc-v14";
+const CACHE_VERSION = "urdu-calc-v15";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -34,6 +34,8 @@ const APP_SHELL = [
   "./icons/upwork.svg",
   "./icons/s-proz.png",
   "./icons/bg-ornament.jpg",
+  "./CloudTrans-Logo.PNG",
+  "./IMG-20250514-WA0032.jpg",
   "./fonts/mehr.woff",
   "./fonts/mehr.ttf",
   "./fonts/ScheherazadeNew-Regular.ttf",
@@ -74,7 +76,7 @@ self.addEventListener("fetch", (event) => {
         .catch(() =>
           caches.match(req).then((hit) => hit || caches.match("./index.html"))
         )
-      );
+    );
     return;
   }
 
