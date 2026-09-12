@@ -105,7 +105,7 @@ html[dir="rtl"] .about-dev-name {
 
 /* Right side in the RTL layout: Waraq Enterprises. The image is bundled locally. */
 .about-project::before {
-  background-image: url("../IMG-20250514-WA0032.jpg");
+  background-image: url("../WaraqLogo.jpg");
 }
 
 /* Left side in the RTL layout: CloudTrans. The image is bundled locally. */
