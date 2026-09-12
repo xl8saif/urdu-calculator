@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123524">
+  <meta name="description" content="روزمرہ حساب کتاب کا آسان ذریعہ: کیلکولیٹر، عمر، زکوٰۃ اور اکائی کنورٹر۔ مکمل آف لائن۔ Everyday math for Urdu speakers — fully offline.">
+  <meta property="og:title" content="اردو کیلکولیٹر — Urdu Calculator">
+  <meta property="og:description" content="Calculator, age, Zakat and unit converter for Urdu speakers — free and fully offline.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/icon-512.png">
+  <link rel="icon" href="icons/favicon.ico">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="manifest" href="manifest.json">
+  <title>اردو کیلکولیٹر | Urdu Calculator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ================= HEADER ================= -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">🧮</span>
+        <div class="brand-text">
+          <h1 class="brand-title" data-i18n="appTitle">اردو کیلکولیٹر</h1>
+          <p class="brand-sub" data-i18n="appSub">روزمرہ حساب کتاب کا آسان ذریعہ</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="btnLang" class="chip" type="button" aria-label="Switch language">اردو / English</button>
+        <button id="btnDigits" class="chip" type="button" aria-label="Switch digits">
+          <span id="digitLabel">۱۲۳</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= TABS ================= -->
+    <nav class="tabs" role="tablist" aria-label="Tools">
+      <button class="tab active" data-tab="calculator" role="tab" aria-selected="true" type="button">
+        <span class="tab-icon">🧮</span>
+        <span class="tab-label" data-i18n="tabCalc">کیلکولیٹر</span>
+      </button>
+      <button class="tab" data-tab="age" role="tab" aria-selected="false" type="button">
+        <span class="tab-icon">🎂</span>
+        <span class="tab-label" data-i18n="tabAge">عمر</span>
+      </button>
+      <button class="tab" data-tab="zakat" role="tab" aria-selected="false" type="button">
+        <span class="tab-icon">🌙</span>
+        <span class="tab-label" data-i18n="tabZakat">زکوٰۃ</span>
+      </button>
+      <button class="tab" data-tab="converter" role="tab" aria-selected="false" type="button">
+        <span class="tab-icon">⚖️</span>
+        <span class="tab-label" data-i18n="tabConv">کنورٹر</span>
+      </button>
+    </nav>
+
+    <main class="content">
+
+      <!-- ================= CALCULATOR VIEW ================= -->
+      <section class="view active" id="view-calculator" role="tabpanel">
+
+        <div class="card calc-card">
+          <div class="calc-screen">
+            <div class="calc-history" id="calcHistory"></div>
+            <div class="calc-expr" id="calcExpr">۰</div>
+            <div class="calc-result" id="calcResult">&nbsp;</div>
+          </div>
+
+          <div class="calc-keypad" id="calcKeypad">
+            <button class="key fn" data-act="clear" type="button" data-i18n="keyAC">صاف</button>
+            <button class="key fn" data-act="sign" type="button">±</button>
+            <button class="key fn" data-act="percent" type="button" data-i18n="keyPct">٪</button>
+            <button class="key op" data-op="÷" type="button">÷</button>
+
+            <button class="key num" data-num="7" type="button" data-i18n="key7">۷</button>
+            <button class="key num" data-num="8" type="button" data-i18n="key8">۸</button>
+            <button class="key num" data-num="9" type="button" data-i18n="key9">۹</button>
+            <button class="key op" data-op="×" type="button">×</button>
+
+            <button class="key num" data-num="4" type="button" data-i18n="key4">۴</button>
+            <button class="key num" data-num="5" type="button" data-i18n="key5">۵</button>
+            <button class="key num" data-num="6" type="button" data-i18n="key6">۶</button>
+            <button class="key op" data-op="−" type="button">−</button>
+
+            <button class="key num" data-num="1" type="button" data-i18n="key1">۱</button>
+            <button class="key num" data-num="2" type="button" data-i18n="key2">۲</button>
+            <button class="key num" data-num="3" type="button" data-i18n="key3">۳</button>
+            <button class="key op" data-op="+" type="button">+</button>
+
+            <button class="key num zero" data-num="0" type="button" data-i18n="key0">۰</button>
+            <button class="key num" data-act="dot" type="button">٫</button>
+            <button class="key eq" data-act="equals" type="button" data-i18n="keyEq">=</button>
+          </div>
+
+          <div class="calc-tools">
+            <button class="mini-btn" data-act="back" type="button" data-i18n="keyBack">مٹائیں ⌫</button>
+            <button class="mini-btn" data-act="history" type="button" data-i18n="keyHist">تاریخ</button>
+            <button class="mini-btn" data-act="ans" type="button" data-i18n="keyAns">پچھلا جواب</button>
+          </div>
+
+          <div class="history-panel hidden" id="historyPanel">
+            <div class="history-head">
+              <span data-i18n="historyTitle">تاریخِ حساب</span>
+              <button class="mini-btn small" id="btnClearHist" type="button" data-i18n="clearHist">صاف کریں</button>
+            </div>
+            <ul class="history-list" id="historyList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= AGE VIEW ================= -->
+      <section class="view" id="view-age" role="tabpanel">
+        <div class="card">
+          <h2 class="card-title" data-i18n="ageTitle">🎂 عمر کیلکولیٹر</h2>
+          <p class="card-hint" data-i18n="ageHint">اپنی تاریخِ پیدائش منتخب کریں</p>
+
+          <label class="field">
+            <span class="field-label" data-i18n="dob">تاریخِ پیدائش</span>
+            <input type="date" id="dobInput">
+          </label>
+
+          <button class="primary-btn" id="btnCalcAge" type="button" data-i18n="ageBtn">عمر نکالیں</button>
+
+          <div class="result-box hidden" id="ageResult">
+            <div class="age-main" id="ageMain"></div>
+            <div class="age-grid">
+              <div class="age-cell"><span class="age-num" id="ageMonths"></span><span class="age-cap" data-i18n="ageTotalMonths">کل ماہ</span></div>
+              <div class="age-cell"><span class="age-num" id="ageWeeks"></span><span class="age-cap" data-i18n="ageTotalWeeks">کل ہفتے</span></div>
+              <div class="age-cell"><span class="age-num" id="ageDays"></span><span class="age-cap" data-i18n="ageTotalDays">کل دن</span></div>
+            </div>
+            <div class="age-bday" id="ageBday"></div>
+          </div>
+
+          <div class="error-box hidden" id="ageError"></div>
+        </div>
+      </section>
+
+      <!-- ================= ZAKAT VIEW ================= -->
+      <section class="view" id="view-zakat" role="tabpanel">
+        <div class="card">
+          <h2 class="card-title" data-i18n="zakatTitle">🌙 زکوٰۃ کیلکولیٹر</h2>
+          <p class="card-hint" data-i18n="zakatHint">اپنے مال کی تفصیل درج کریں — خالی چھوٹا جائے تو صفر سمجھا جائے گا</p>
+
+          <div class="field-grid">
+            <label class="field">
+              <span class="field-label" data-i18n="zkCash">نقدی اور بینک رقم</span>
+              <input type="number" id="zkCash" min="0" step="any" placeholder="0">
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="zkGold">سونا (گرام)</span>
+              <input type="number" id="zkGold" min="0" step="any" placeholder="0">
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="zkSilver">چاندی (گرام)</span>
+              <input type="number" id="zkSilver" min="0" step="any" placeholder="0">
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="zkBiz">کاروباری مال و جدید ذخیرہ</span>
+              <input type="number" id="zkBiz" min="0" step="any" placeholder="0">
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="zkLend">دوسروں کو دیا قرض</span>
+              <input type="number" id="zkLend" min="0" step="any" placeholder="0">
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="zkDebt">مجھ پر قرض (منہا کریں)</span>
+              <input type="number" id="zkDebt" min="0" step="any" placeholder="0">
+            </label>
+          </div>
+
+          <div class="rates-box">
+            <h3 class="rates-title" data-i18n="zkRates">آج کے ریٹ (فی گرام — خود درست کریں)</h3>
+            <div class="field-grid two">
+              <label class="field">
+                <span class="field-label" data-i18n="zkGoldRate">سونے کا ریٹ</span>
+                <input type="number" id="zkGoldRate" min="0" step="any">
+              </label>
+              <label class="field">
+                <span class="field-label" data-i18n="zkSilverRate">چاندی کا ریٹ</span>
+                <input type="number" id="zkSilverRate" min="0" step="any">
+              </label>
+            </div>
+          </div>
+
+          <button class="primary-btn" id="btnCalcZakat" type="button" data-i18n="zakatBtn">زکوٰۃ نکالیں</button>
+
+          <div class="result-box hidden" id="zakatResult">
+            <div class="zakat-verdict" id="zakatVerdict"></div>
+            <div class="zakat-amount" id="zakatAmount"></div>
+            <table class="zakat-table" id="zakatTable"></table>
+            <p class="zakat-note" data-i18n="zakatNote">نوٹ: یہ تخمینہ ہے۔ زکوٰۃ کے احکام کے لیے اپنے عالم/مفتی سے رجوع کریں۔</p>
+          </div>
+
+          <div class="error-box hidden" id="zakatError"></div>
+        </div>
+      </section>
+
+      <!-- ================= CONVERTER VIEW ================= -->
+      <section class="view" id="view-converter" role="tabpanel">
+        <div class="card">
+          <h2 class="card-title" data-i18n="convTitle">⚖️ اکائی کنورٹر</h2>
+
+          <div class="cat-row" id="convCats">
+            <button class="cat active" data-cat="length" type="button" data-i18n="catLength">لمبائی</button>
+            <button class="cat" data-cat="weight" type="button" data-i18n="catWeight">وزن</button>
+            <button class="cat" data-cat="area" type="button" data-i18n="catArea">رقبہ</button>
+            <button class="cat" data-cat="volume" type="button" data-i18n="catVolume">حجم</button>
+            <button class="cat" data-cat="temp" type="button" data-i18n="catTemp">درجہ حرارت</button>
+            <button class="cat" data-cat="currency" type="button" data-i18n="catCurrency">کرنسی</button>
+          </div>
+
+          <div class="conv-grid">
+            <label class="field">
+              <span class="field-label" data-i18n="convFrom">از</span>
+              <input type="number" id="convFromVal" step="any" placeholder="0">
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="convFromUnit">اکائی</span>
+              <select id="convFromUnit"></select>
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="convToUnit">اکائی</span>
+              <select id="convToUnit"></select>
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="convTo">نتیجہ</span>
+              <input type="text" id="convToVal" readonly>
+            </label>
+          </div>
+
+          <div class="rates-box hidden" id="convRateRow">
+            <label class="field">
+              <span class="field-label" id="convRateLabel"></span>
+              <input type="number" id="convRate" min="0" step="any" placeholder="1">
+            </label>
+          </div>
+
+          <button class="mini-btn swap" id="btnSwap" type="button" data-i18n="convSwap">↔ بدلیں</button>
+
+          <div class="conv-facts" id="convFacts"></div>
+          <div class="error-box hidden" id="convError"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      <span data-i18n="footer">مفت اور آف لائن — اردو بولنے والوں کے لیے ❤️</span>
+      <button class="footer-credit" id="btnAbout" type="button" data-i18n="aboutBtn">ڈیولپر کا تعارف</button>
+    </footer>
+  </div>
+
+  <!-- ================= ABOUT MODAL ================= -->
+  <div class="modal-backdrop hidden" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitleEl">
+    <div class="modal">
+      <h2 class="card-title" id="aboutTitleEl" data-i18n="aboutTitle">ڈیولپر کا تعارف</h2>
+      <p class="about-project" data-i18n="aboutProject">وڑاق انٹرپرائزز، گلگت کا ایک منصوبہ</p>
+      <div class="about-dev">
+        <img class="about-avatar" src="icons/portrait.png" alt="Syed Saif Ullah Jailani">
+        <div class="about-dev-info">
+          <span class="about-dev-label" data-i18n="aboutDevelopedBy">ڈیولپر</span>
+          <span class="about-dev-name" data-i18n="devName">سید سیف اللہ جیلانی - گلگت</span>
+        </div>
+      </div>
+      <p class="about-version"><span data-i18n="aboutVersion">ورژن</span> ۱.۰.۰ · <span data-i18n="fontCredit">فونٹ: میہر نستعلیق ویب</span></p>
+      <h3 class="about-findme" data-i18n="aboutFindMe">رابطہ اور پروفائلز</h3>
+      <div class="about-links">
+        <a class="social-tile" href="https://www.linkedin.com/in/xl8saif" target="_blank" rel="noopener">
+          <img src="icons/linkedin.svg" alt="LinkedIn"><span data-i18n="lnLinkedIn">لنکڈان</span>
+        </a>
+        <a class="social-tile" href="https://github.com/xl8saif" target="_blank" rel="noopener">
+          <img src="icons/github.svg" alt="GitHub"><span data-i18n="lnGitHub">گٹ ہب</span>
+        </a>
+        <a class="social-tile" href="https://www.proz.com/profile/3150554" target="_blank" rel="noopener">
+          <img src="icons/s-proz.png" alt="ProZ"><span data-i18n="lnProz">پرو زیڈ</span>
+        </a>
+        <a class="social-tile" href="https://www.upwork.com/freelancers/011ed3711aa3cf98f4" target="_blank" rel="noopener">
+          <img src="icons/upwork.svg" alt="Upwork"><span data-i18n="lnUpwork">اپ ورک</span>
+        </a>
+        <a class="social-tile" href="https://www.facebook.com/khalid.tasmim" target="_blank" rel="noopener">
+          <img src="icons/facebook.svg" alt="Facebook"><span data-i18n="lnFacebook">فیس بک</span>
+        </a>
+        <a class="social-tile" href="https://xl8saif.github.io" target="_blank" rel="noopener">
+          <img src="icons/s-website.png" alt="Website"><span data-i18n="lnWebsite">ویب سائٹ</span>
+        </a>
+        <a class="social-tile" href="https://wa.me/923100989830" target="_blank" rel="noopener">
+          <img src="icons/whatsapp.svg" alt="WhatsApp"><span data-i18n="lnWhatsapp">واٹس ایپ</span>
+        </a>
+        <a class="social-tile" href="mailto:xl8.saif@gmail.com">
+          <img src="icons/gmail.svg" alt="Email"><span data-i18n="lnEmail">ای میل</span>
+        </a>
+      </div>
+      <button class="primary-btn" id="btnCloseAbout" type="button" data-i18n="aboutClose">بند کریں</button>
+    </div>
+  </div>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {
+          /* offline caching unavailable (e.g. file://) — app still works */
+        });
+      });
+    }
+  </script>
+  <script src="js/i18n.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/age.js"></script>
+  <script src="js/zakat.js"></script>
+  <script src="js/converter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
