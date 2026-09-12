@@ -11,8 +11,6 @@
   function $(sel) { return document.querySelector(sel); }
   function $all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
 
-  // ---------- i18n DOM application ----------
-
   function applyTranslations() {
     $all("[data-i18n]").forEach(function (elm) {
       var key = elm.getAttribute("data-i18n");
@@ -27,12 +25,10 @@
   }
 
   function updateDigitLabel() {
-    // shows what a tap will switch TO
     $("#digitLabel").textContent =
       I18N.getDigitMode() === "urdu" ? "123" : "۱۲۳";
   }
 
-  // Re-render dynamic content in all modules
   function refreshModules() {
     applyDirection();
     applyTranslations();
@@ -43,14 +39,12 @@
     Conv.onLanguageChange();
   }
 
-  // ---------- persistence ----------
-
   function loadPrefs() {
     var lang = null, digits = null;
     try {
       lang = localStorage.getItem(LS_LANG);
       digits = localStorage.getItem(LS_DIGITS);
-    } catch (e) { /* private mode */ }
+    } catch (e) {}
 
     I18N.setLang(lang === "en" ? "en" : "ur");
     if (digits === "western") I18N.setDigitMode("western");
@@ -58,10 +52,8 @@
   }
 
   function savePref(key, val) {
-    try { localStorage.setItem(key, val); } catch (e) { /* private mode */ }
+    try { localStorage.setItem(key, val); } catch (e) {}
   }
-
-  // ---------- tabs ----------
 
   function activateTab(name) {
     $all(".tab").forEach(function (t) {
@@ -81,7 +73,6 @@
     });
   }
 
-  // Deep links: index.html#tab=calculator|age|zakat|converter(&demo=1)
   function applyHash() {
     var h = location.hash.replace(/^#/, "");
     if (!h) return;
@@ -110,8 +101,6 @@
     }
   }
 
-  // ---------- header controls ----------
-
   function initControls() {
     $("#btnLang").addEventListener("click", function () {
       var next = I18N.getLang() === "ur" ? "en" : "ur";
@@ -128,11 +117,23 @@
     });
   }
 
-  // ---------- about modal ----------
-
   function initAbout() {
     var modal = document.getElementById("aboutModal");
     if (!modal) return;
+
+    // Google Play requires a privacy-policy link to be accessible from within the app.
+    var closeBtn = document.getElementById("btnCloseAbout");
+    if (closeBtn && !document.getElementById("btnPrivacyPolicy")) {
+      var privacy = document.createElement("a");
+      privacy.id = "btnPrivacyPolicy";
+      privacy.className = "primary-btn";
+      privacy.href = "privacy.html";
+      privacy.target = "_blank";
+      privacy.rel = "noopener";
+      privacy.textContent = I18N.getLang() === "ur" ? "پرائیویسی پالیسی" : "Privacy Policy";
+      closeBtn.parentNode.insertBefore(privacy, closeBtn);
+    }
+
     document.getElementById("btnAbout").addEventListener("click", function () {
       modal.classList.remove("hidden");
     });
@@ -140,7 +141,7 @@
       modal.classList.add("hidden");
     });
     modal.addEventListener("click", function (e) {
-      if (e.target === modal) modal.classList.add("hidden"); // click outside closes
+      if (e.target === modal) modal.classList.add("hidden");
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !modal.classList.contains("hidden")) {
@@ -148,8 +149,6 @@
       }
     });
   }
-
-  // ---------- boot ----------
 
   function init() {
     loadPrefs();
@@ -160,8 +159,8 @@
     initTabs();
     initControls();
     initAbout();
-    refreshModules();   // translate labels + re-render modules with saved prefs
-    applyHash();        // honor deep links like #tab=converter&demo=1
+    refreshModules();
+    applyHash();
   }
 
   document.addEventListener("DOMContentLoaded", init);
